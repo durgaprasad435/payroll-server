@@ -7,7 +7,7 @@ const authmiddleware = require("../payroll-server/middleware/authmiddleware");
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://payroll-client-rose.vercel.app/",
+    origin: "https://payroll-client-rose.vercel.app/login",
     methods: "GET,POST",
     credentials: true,
   })
