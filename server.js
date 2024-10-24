@@ -7,7 +7,7 @@ const authmiddleware = require("../payroll-server/middleware/authmiddleware");
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://payroll-client-rose.vercel.app/",
     methods: "GET,POST",
     credentials: true,
   })
@@ -28,5 +28,4 @@ var port = process.env.API_PORT || 9000;
 
 app.listen(port, null, () => {
   const message = `API listening to port ${port}`;
-  console.log(message);
 });

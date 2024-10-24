@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 function myLogger(req, res, next) {
-  console.log("LOGGED");
   next(); // Ensure next() is called to continue middleware chain
 }
 
@@ -23,7 +22,6 @@ const authenticateRequests = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log("Decoded Token:", decoded); // Log the decoded token for debugging
     req.user = decoded; // Store decoded token info (username, role)
     next(); // Continue to the next middleware
   } catch (err) {
@@ -35,7 +33,6 @@ const authenticateRequests = async (req, res, next) => {
 const authorizeRole = (allowedRoles) => {
   return (req, res, next) => {
     const { role } = req.user; // Extract role from decoded JWT
-    console.log("User Role:", role); // Log the role for debugging
 
     if (!role) {
       return res.status(403).send("Forbidden: No role found in token");
@@ -44,7 +41,6 @@ const authorizeRole = (allowedRoles) => {
     if (allowedRoles.includes(role)) {
       return next(); // Role is authorized, continue to the next middleware
     } else {
-      console.log("second")
       return res.status(403).send({message:"Forbidden: Insufficient permissions"});
     }
   };

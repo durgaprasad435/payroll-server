@@ -28,7 +28,7 @@ async function sendPayslipEmail(toEmail, subject, message, pdfBlob, fromEmail) {
     console.error(`Error sending email with fromEmail (${fromEmail}):`, error);
 
     // Fallback: Send email with the default noreply email if the dynamic one fails
-    console.log("Falling back to default noreply email...");
+   
     await sendEmail(toEmail, subject, message, pdfBlob, process.env.EMAIL_USER);
   }
 }
@@ -50,7 +50,7 @@ async function sendEmail(toEmail, subject, message, pdfBlob, fromEmail) {
   };
   // Send the email using nodemailer
   const info = await transporter.sendMail(mailOptions);
-  console.log(`Email sent with fromEmail (${fromEmail}):`, info.response);
+ 
 }
 async function RegisterInfo(uname, email, password, role) {
   // Check if the user already exists
@@ -131,7 +131,7 @@ async function addAddress(options) {
     zipCode,
   };
   var existingAddress = await Address.findOne({ employeeId });
-  console.log("existingAddress", existingAddress);
+  
   if (existingAddress) {
     // Update the existing document
     await Address.updateOne(
@@ -142,7 +142,7 @@ async function addAddress(options) {
         },
       }
     );
-    console.log("Updated SalaryObj", { employeeId, addressObj });
+   
     return await GetAllAddresses(); // Return the updated document or any relevant data
   } else {
     // Create a new document
@@ -150,7 +150,7 @@ async function addAddress(options) {
     addressObj.addressId = uuid.v4(); // Generate a new ID only for new documents
     try {
       const newAddress = await Address.create(addressObj);
-      console.log("Created newAddress", newAddress);
+
       return await GetAllAddresses();
     } catch (error) {
       console.error("Error creating address:", error);
@@ -178,7 +178,7 @@ async function addEmployee(
   id
 ) {
   var doc = await Employee.findOne({ id: id });
-  console.log(doc);
+
   var employeeObj = null;
   if (doc == null) {
     employeeObj = {
@@ -294,12 +294,12 @@ async function bulkaddressesdata(options) {
   if (addressDocs.length > 0) {
     try {
       await Address.insertMany(addressDocs);
-      console.log("New Addresses successfully inserted:", addressDocs);
+     
     } catch (insertError) {
       console.error("Error inserting new Addresses:", insertError.message);
     }
   } else {
-    console.log("No new Addresses to insert.");
+    console.error("No new Addresses to insert.");
   }
 
   return await GetAllAddresses();
@@ -384,7 +384,7 @@ async function bulkempdata(employees) {
           { employeeId: employeeId },
           { $set: updatedEmployee }
         );
-        console.log(`Employee with ID ${employeeId} successfully updated.`);
+        
       }
     } catch (error) {
       console.error(
@@ -398,12 +398,12 @@ async function bulkempdata(employees) {
   if (employeeDocs.length > 0) {
     try {
       await Employee.insertMany(employeeDocs);
-      console.log("New employees successfully inserted:", employeeDocs);
+      
     } catch (insertError) {
       console.error("Error inserting new employees:", insertError.message);
     }
   } else {
-    console.log("No new employees to insert.");
+    console.error("No new employees to insert.");
   }
 
   return await GetAllEmployees(); // Fetch all employees after the operation
@@ -482,9 +482,6 @@ async function bulksalariesdata(salaries) {
           { employeeId: formattedEmployeeId },
           { $set: updatedSalary }
         );
-        console.log(
-          `Employee with ID ${formattedEmployeeId} successfully updated.`
-        );
       }
     } catch (error) {
       console.error(
@@ -498,12 +495,11 @@ async function bulksalariesdata(salaries) {
   if (salaryDocs.length > 0) {
     try {
       await Salary.insertMany(salaryDocs);
-      console.log("New Salaries successfully inserted:", salaryDocs);
     } catch (insertError) {
       console.error("Error inserting new salaries:", insertError.message);
     }
   } else {
-    console.log("No new salaries to insert.");
+    console.error("No new salaries to insert.");
   }
 
   return await getEmployeesSalaryDetails(); // Fetch salary details after the operation
@@ -529,7 +525,6 @@ async function addEmployer(
     employerEmail: employeerEmail,
   };
   var data = await Employer.create(employerObj);
-  console.log(data);
   return data;
 }
 async function addLeave(
@@ -609,14 +604,14 @@ async function addSalary(options) {
           },
         }
       );
-      console.log("Updated SalaryObj", { employeeId, ...salaryObj });
+      
       return await getEmployeesSalaryDetails(); // Return the updated document or any relevant data
     } else {
       // Create a new document
       salaryObj.id = uuid.v4();
       (salaryObj.createdDate = new Date()), // Generate a new ID only for new documents
         (newSalary = await Salary.create(salaryObj));
-      console.log("Created SalaryObj", newSalary);
+     
       return await getEmployeesSalaryDetails();
     }
   } catch (error) {
@@ -697,7 +692,6 @@ async function updateStatusForAll(status) {
 
 async function getSalaryByEmpId(employeeId) {
   var data = await Salary.findOne({ employeeId: employeeId });
-  console.log(data);
   if (data == null) return {};
   return data;
 }

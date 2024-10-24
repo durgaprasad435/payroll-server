@@ -128,7 +128,6 @@ router.post(
   authenticateRequests,
   authorizeRole(["admin"]),
   async (req, res, next) => {
-    console.log(req.body);
     try {
       var employee = await service.addEmployee(
         req.body.firstName,
@@ -164,14 +163,14 @@ router.post("/bulkempdata", async (req, res, next) => {
   try {
     // Make sure req.body.jsonData is an array
     const employees = req.body.jsonData;
-    console.log("employees", employees);
+
     if (!Array.isArray(employees)) {
       return res
         .status(400)
         .send({ status: "error", message: "Invalid data format" });
     }
     const result = await service.bulkempdata(employees);
-    console.log("result", result);
+
     res.send({
       status: "success",
       data: result,
@@ -185,14 +184,14 @@ router.post("/bulksalariesdata", async (req, res, next) => {
   try {
     // Make sure req.body.jsonData is an array
     const salaries = req.body.jsonData;
-    console.log("Received salaries:", salaries); // Log incoming data
+
     if (!Array.isArray(salaries)) {
       return res
         .status(400)
         .send({ status: "error", message: "Invalid data format" });
     }
     const result = await service.bulksalariesdata(salaries);
-    console.log("Result:", result);
+
     res.send({
       status: "success",
       data: result,
@@ -207,14 +206,14 @@ router.post("/bulkaddressesdata", async (req, res, next) => {
   try {
     // Make sure req.body.jsonData is an array
     const addresses = req.body.jsonData;
-    console.log("addresses", addresses);
+
     if (!Array.isArray(addresses)) {
       return res
         .status(400)
         .send({ status: "error", message: "Invalid data format" });
     }
     const result = await service.bulkaddressesdata(addresses);
-    console.log("result", result);
+
     res.send({
       status: "success",
       data: result,
@@ -483,7 +482,6 @@ router.post("/payslipemail", upload.single("pdf"), async (req, res) => {
   try {
     const { email, subject, message, fromEmail } = req.body;
     const pdfBlob = req.file;
-    console.log(req.body);
     if (!pdfBlob) {
       return res
         .status(400)
